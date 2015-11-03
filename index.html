@@ -1,0 +1,219 @@
+<html>
+<head>
+	<!-- <link href="http://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet" type="text/css"> -->
+	<title>Prototype</title>
+
+	<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+
+	<meta name="viewport" content="width=900px">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap-theme.min.css">
+
+	<style type="text/css">	
+	@font-face {
+	    font-family: 'Reconstruct';
+	    src: url('assets/fonts/reconstruct-webfont.eot');
+	    src: url('assets/fonts/reconstruct-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('assets/fonts/reconstruct-webfont.woff') format('woff'),
+	         url('assets/fonts/reconstruct-webfont.ttf') format('truetype'),
+	         url('assets/fonts/reconstruct-webfont.svg#Reconstruct') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}	
+		body{
+			margin: 0;
+			padding: 0;
+			background-color: white;
+			font-family: sans-serif;
+		}
+
+		.game {
+			background-color: #06161B;
+		}
+
+		fieldset {
+			margin: 10px 0;
+		}
+
+		form {
+			width: 300px;
+			margin: 0 auto;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 50px;
+			padding: 30px;
+			text-align: center;
+		}
+
+		canvas {
+			position:  absolute;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+		}
+
+		.input-group {
+			margin-bottom: 10px;
+		}
+
+		@media (orientation: portrait) {
+			body {
+				background: url(assets/img/moises-gato.png) center center #06161B no-repeat;
+			}
+			canvas {
+				display: none;
+			}
+		}
+	</style>
+</head>
+<body>
+
+
+<form>
+	<fieldset>
+		<legend>Tab Type</legend>
+		<label for="square">Square</label>
+		<input type="radio" name="type" value="square" id="square">
+		<label for="hex">Hex</label>
+		<input type="radio" name="type" value="hex" id="hex" checked>
+	</fieldset>
+	<fieldset>
+		<legend>Tab Dimensions</legend>
+		<div class="input-group">
+			<span class="input-group-addon">Altura:</span>
+			<input class="form-control" type="number" name="dimensions_i" id="dimensioni" min="0" max="20" value="4">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Largura:</span>
+			<input class="form-control" type="number" name="dimensions_j" id="dimensionj" min="0" max="20" value="10">
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend>Random Cards</legend>
+		<label for="rndcards"></label>
+		<input class="form-control" type="number" name="cards" id="rndcards" min="0" max="4" value="1">
+	</fieldset>
+	<fieldset>
+		<legend>Card Levels</legend>
+		<label for="low">Low</label>
+		<input type="radio" name="levels" value="low" id="low">
+		<label for="bal">Balanced</label>
+		<input type="radio" name="levels" value="bal" id="bal" checked>
+		<label for="high">High</label>
+		<input type="radio" name="levels" value="high" id="high">
+	</fieldset>
+	<!-- <fieldset>
+		<legend>URL</legend>
+		<input style="width:400px" type="text" name="url" value="" id="url">
+	</fieldset> -->
+	<button class="btn btn-primary">Jogar</button>
+	<button class="btn btn-primary online">Jogar Online</button>
+</form>
+<script src="../../source/jquery/jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript" src="assets/bootstrap.min.js"></script>
+
+
+<!-- <h1 style="font-family: 'Luckiest Guy'">teste</h1> -->
+<script type="text/javascript" src="../../source/class.js"></script>
+<script type="text/javascript" src="../../source/pixi/pixi.dev.js"></script>
+<script type="text/javascript" src="../../source/pixi/pixi.ext.js"></script>
+<script type="text/javascript" src="../../source/pixi/Graphics.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/application/AbstractApplication.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/abstractFactory/GUI/DefaultButton.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/layer/Layer.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/layer/LayerManager.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/screen/AbstractScreen.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/screen/ScreenManager.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/entity/Entity.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/entity/SpritesheetEntity.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/utils/ArrayUtils.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/utils/SimpleSprite.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/utils/spritesheet/Spritesheet.js"></script>
+<script type="text/javascript" src="../../source/easeGameFramework/utils/spritesheet/SpritesheetAnimation.js"></script>
+<script type="text/javascript" src="source/game/Game.js"></script>
+<script type="text/javascript" src="source/game/screen/InitScreen.js"></script>
+<script type="text/javascript" src="source/game/screen/GameScreen.js"></script>
+<script type="text/javascript" src="source/game/screen/WandoScreen.js"></script>
+<script type="text/javascript" src="source/game/objects/FinderItem.js"></script>
+<script type="text/javascript" src="source/game/objects/FinderModel.js"></script>
+<script type="text/javascript" src="source/game/HUD/HUDContainer.js"></script>
+<script type="text/javascript" src="source/game/HUD/RequestItemBox.js"></script>
+<script type="text/javascript" src="source/game/grid/GridTile.js"></script>
+<script type="text/javascript" src="source/game/card/CardModel.js"></script>
+<script type="text/javascript" src="source/game/card/Card.js"></script>
+
+<script type="text/javascript" src="source/main.js"></script>
+<script src="../../source/EasePack.min.js"></script>
+<script src="../../source/TweenLite.min.js"></script>
+<script src="../../source/TimelineLite.min.js"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function (){
+		window.playerId = Math.floor(Math.random() * 486345654);
+
+
+		$(window).on('hashchange', function() {
+			if (typeof(window.myDataRef)=="undefined") {
+				window.myDataRef = new Firebase("https://jefframos.firebaseio.com/" + window.location.hash.substr(1));
+			}
+
+	        myDataRef.push({
+	            type: "connect",
+	            id: window.playerId
+	        });
+
+	        myDataRef.on('child_added', function(snapshot) {
+	        	var message = snapshot.val();
+	        	if (message.type=="board") {
+					$('form').remove();
+					$('body').addClass('game');
+					initialize(message.data);
+	        	}
+	        });
+		});
+
+		if (window.location.hash.length > 0) {
+			$(window).trigger('hashchange');
+		}
+
+		var gameId = Math.floor(Math.random() * 6677845386);
+		//$('form').on('submit', function (e) {
+			function init(isOnline){
+				//var that = $(this);
+				var form = $("form");
+				//e.preventDefault();
+
+				if(isOnline){
+					window.myDataRef = new Firebase("https://jefframos.firebaseio.com/" + gameId);
+					myDataRef.push({
+						id: playerId,
+						type: "board", 
+						data: form.serializeArray()
+					});
+					window.location.hash = gameId;
+				}else{
+					myDataRef = null;
+					initialize(form.serializeArray());
+				}			
+			}
+			
+		//});
+		$('form').on('submit', function (e) {
+			return false
+		});
+
+		$("form button").on("click", function(){
+			var that = $(this);			
+			if(that.hasClass("online")){
+				init(true);
+			}else init(false);
+		})
+	});
+</script>
+
+</body>
+</html>
